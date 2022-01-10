@@ -2,6 +2,12 @@ import { renderToString } from "react-dom/server";
 import { RemixServer } from "remix";
 import type { EntryContext } from "remix";
 
+// TODO move this into the build config
+if (process.env.NODE_ENV === "development") {
+  console.log("setting envs");
+  require("dotenv").config();
+}
+
 export default function handleRequest(
   request: Request,
   responseStatusCode: number,
@@ -16,6 +22,6 @@ export default function handleRequest(
 
   return new Response("<!DOCTYPE html>" + markup, {
     status: responseStatusCode,
-    headers: responseHeaders
+    headers: responseHeaders,
   });
 }
