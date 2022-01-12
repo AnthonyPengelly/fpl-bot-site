@@ -1,4 +1,5 @@
 import * as WebRequest from "web-request";
+import { tryGetFromCache } from "./cache";
 
 export type FplPlayer = {
   id: number;
@@ -150,13 +151,13 @@ const baseUrl = "https://fantasy.premierleague.com/api";
 
 const getFixtures = async () => {
   const url = baseUrl + "/fixtures/";
-  return await WebRequest.json<FplFixture[]>(url);
+  return await tryGetFromCache(url, () => WebRequest.json<FplFixture[]>(url));
 };
 
 export const getFplOverview = async () => {
   const url = baseUrl + "/bootstrap-static/";
+  // File size too large to cache
   const overview = await WebRequest.json<FplOverview>(url);
-
   return {
     ...overview,
     fixtures: await getFixtures(),

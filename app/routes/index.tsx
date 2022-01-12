@@ -1,6 +1,4 @@
 import { Link, LoaderFunction, redirect, useLoaderData } from "remix";
-import { getFplOverview, Overview } from "~/fplApi/getFplOverview";
-import { getMyTeam, MyTeam } from "~/fplApi/myTeam";
 import { GameState, getGameState } from "~/gameState/gameState";
 import { getSession } from "~/session";
 

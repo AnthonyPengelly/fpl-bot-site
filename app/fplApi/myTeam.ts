@@ -1,3 +1,5 @@
+import { tryGetFromCache } from "./cache";
+
 export type MyTeam = {
   picks: {
     element: number;
@@ -20,15 +22,19 @@ export type MyTeam = {
 };
 const baseUrl = "https://fantasy.premierleague.com/api";
 
-const getMyDetails = async (fplCookie: string) => {
+const getMyDetails = async (fplCookie: string, username: string) => {
   const url = baseUrl + "/me/";
-  const response = await fetch(url, { headers: { Cookie: fplCookie } });
-  return (await response.json()) as { player: { entry: number } };
+  return await tryGetFromCache(`${url}:${username}`, async () => {
+    const response = await fetch(url, { headers: { Cookie: fplCookie } });
+    return (await response.json()) as { player: { entry: number } };
+  });
 };
 
-export const getMyTeam = async (fplCookie: string) => {
-  const teamId = (await getMyDetails(fplCookie)).player.entry;
+export const getMyTeam = async (fplCookie: string, username: string) => {
+  const teamId = (await getMyDetails(fplCookie, username)).player.entry;
   const url = baseUrl + "/my-team/" + teamId + "/";
-  const response = await fetch(url, { headers: { Cookie: fplCookie } });
-  return (await response.json()) as MyTeam;
+  return await tryGetFromCache(url, async () => {
+    const response = await fetch(url, { headers: { Cookie: fplCookie } });
+    return (await response.json()) as MyTeam;
+  });
 };

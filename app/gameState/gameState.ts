@@ -16,7 +16,7 @@ export type GameState = {
 };
 
 export const getGameState = async (fplCookie: string, username: string) => {
-  const myTeam = await getMyTeam(fplCookie);
+  const myTeam = await getMyTeam(fplCookie, username);
   const fplOverview = await getFplOverview();
   const scoreWeights = await getWeightsForUsername(username);
   const nextEvent = fplOverview.events.filter((event) => event.is_next)[0];
