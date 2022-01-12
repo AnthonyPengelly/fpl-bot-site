@@ -1,11 +1,4 @@
-import {
-  ActionFunction,
-  Form,
-  json,
-  LoaderFunction,
-  redirect,
-  useLoaderData,
-} from "remix";
+import { ActionFunction, Form, json, LoaderFunction, redirect } from "remix";
 import { loginToFpl } from "~/fplApi/login";
 import { commitSession, getSession } from "~/session";
 
@@ -30,6 +23,7 @@ export const action: ActionFunction = async ({ request }) => {
   const fplCookie = await loginToFpl(username.toString(), password.toString());
 
   session.set("fplCookie", fplCookie);
+  session.set("username", username);
   return redirect("/", {
     headers: { "Set-Cookie": await commitSession(session) },
   });
