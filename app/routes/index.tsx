@@ -1,6 +1,7 @@
-import { LoaderFunction, redirect, useLoaderData } from "remix";
-import { GetFplOverview, Overview } from "~/fplApi/getFplOverview";
+import { Link, LoaderFunction, redirect, useLoaderData } from "remix";
+import { getFplOverview, Overview } from "~/fplApi/getFplOverview";
 import { getMyTeam, MyTeam } from "~/fplApi/myTeam";
+import { GameState, getGameState } from "~/gameState/gameState";
 import { getSession } from "~/session";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -9,25 +10,28 @@ export const loader: LoaderFunction = async ({ request }) => {
   if (!session.has("fplCookie")) {
     return redirect("/login");
   }
-  return {
-    myTeam: await getMyTeam(session.get("fplCookie")),
-    overview: await GetFplOverview(),
-  };
+  return getGameState(session.get("fplCookie"), session.get("username"));
 };
 
 export default function Index() {
-  const { myTeam, overview } =
-    useLoaderData<{ myTeam: MyTeam; overview: Overview }>();
+  const { players, myTeam } = useLoaderData<GameState>();
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <h1>Welcome to Remix</h1>
+      <h1>FPL Bot</h1>
+      <Link to="/scores">Update score settings</Link>
+      <h2>My Team</h2>
       <ul>
-        {myTeam.picks.map((pick) => (
-          <li key={pick.element}>
-            {
-              overview.elements.find((element) => element.id === pick.element)
-                ?.web_name
-            }
+        {myTeam.players.map((player) => (
+          <li key={player.id}>
+            <b>{player.scoreDetails.score.toFixed(2)}</b> - {player.name}
+          </li>
+        ))}
+      </ul>
+      <h2>All Players</h2>
+      <ul>
+        {players.slice(0, 25).map((player) => (
+          <li key={player.id}>
+            <b>{player.scoreDetails.score.toFixed(2)}</b> - {player.name}
           </li>
         ))}
       </ul>

@@ -1,6 +1,7 @@
 import {
   ActionFunction,
   Form,
+  Link,
   LoaderFunction,
   redirect,
   useLoaderData,
@@ -10,7 +11,7 @@ import {
   saveWeightsForUsername,
   ScoreWeight,
   ScoreWeights,
-} from "~/scoreWeightings";
+} from "~/gameState/scoreWeightings";
 import { getSession } from "~/session";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -110,6 +111,7 @@ const Scores = () => {
 
   return (
     <main>
+      <Link to="/">Home</Link>
       <h1>Scores</h1>
       <Form method="post">
         <h2>Score Weights</h2>
