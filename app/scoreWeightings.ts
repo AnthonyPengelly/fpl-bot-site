@@ -1,8 +1,5 @@
-import {
-  DynamoDBClient,
-  GetItemCommand,
-  PutItemCommand,
-} from "@aws-sdk/client-dynamodb";
+import { GetItemCommand, PutItemCommand } from "@aws-sdk/client-dynamodb";
+import { dbClient } from "./dbClient";
 
 export type ScoreWeight = {
   weight: number;
@@ -64,7 +61,7 @@ export const saveWeightsForUsername = async (
   username: string,
   weights: ScoreWeights
 ) => {
-  const client = new DynamoDBClient({ region: process.env.AWS_REGION });
+  const client = dbClient();
   const command = new PutItemCommand({
     TableName: process.env.SCORES_TABLE,
     Item: {
@@ -76,7 +73,7 @@ export const saveWeightsForUsername = async (
 };
 
 const readTableForId = async (id: string) => {
-  const client = new DynamoDBClient({ region: process.env.AWS_REGION });
+  const client = dbClient();
   const command = new GetItemCommand({
     TableName: process.env.SCORES_TABLE,
     Key: {

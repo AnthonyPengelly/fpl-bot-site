@@ -43,3 +43,4 @@ If you're used to using the `vercel dev` command provided by [Vercel CLI](https:
 - Make transfers
 - Suggest lineup
 - Adjust score weightings (per position)
+- Reset scores to default

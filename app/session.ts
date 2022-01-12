@@ -1,10 +1,10 @@
 import { Cookie, CookieOptions, createSessionStorage } from "remix";
 import {
   DeleteItemCommand,
-  DynamoDBClient,
   GetItemCommand,
   PutItemCommand,
 } from "@aws-sdk/client-dynamodb";
+import { dbClient } from "./dbClient";
 
 export const cookieName = "__session";
 
@@ -15,8 +15,7 @@ const createDatabaseSessionStorage = (
         name?: string;
       })
 ) => {
-  // Configure your database client...
-  const client = new DynamoDBClient({ region: process.env.AWS_REGION });
+  const client = dbClient();
 
   return createSessionStorage({
     cookie,
