@@ -1,5 +1,6 @@
 import {
   Links,
+  LinksFunction,
   LiveReload,
   Meta,
   Outlet,
@@ -7,9 +8,14 @@ import {
   ScrollRestoration,
 } from "remix";
 import type { MetaFunction } from "remix";
+import globalStylesUrl from "~/styles/global.css";
 
 export const meta: MetaFunction = () => {
   return { title: "FPL Bot" };
+};
+
+export let links: LinksFunction = () => {
+  return [{ rel: "stylesheet", href: globalStylesUrl }];
 };
 
 export default function App() {
@@ -22,7 +28,9 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Outlet />
+        <main className="container">
+          <Outlet />
+        </main>
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}
