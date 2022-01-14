@@ -1,3 +1,4 @@
+import { tryGetFromCache } from "~/cache";
 import { getFplOverview } from "~/fplApi/getFplOverview";
 import { getMyTeam, MyTeam } from "~/fplApi/myTeam";
 import { getWeightsForUsername } from "~/gameState/scoreWeightings";
@@ -16,6 +17,12 @@ export type GameState = {
 };
 
 export const getGameState = async (fplCookie: string, username: string) => {
+  return tryGetFromCache(`gamestate-${username}`, () =>
+    buildGameState(fplCookie, username)
+  );
+};
+
+const buildGameState = async (fplCookie: string, username: string) => {
   const myTeam = await getMyTeam(fplCookie, username);
   const fplOverview = await getFplOverview();
   const scoreWeights = await getWeightsForUsername(username);

@@ -1,5 +1,5 @@
 import * as WebRequest from "web-request";
-import { tryGetFromCache } from "./cache";
+import { tryGetFromCache } from "../cache";
 
 export type FplPlayer = {
   id: number;
@@ -157,7 +157,9 @@ const getFixtures = async () => {
 export const getFplOverview = async () => {
   const url = baseUrl + "/bootstrap-static/";
   // File size too large to cache
-  const overview = await WebRequest.json<FplOverview>(url);
+  const overview = await tryGetFromCache(url, () =>
+    WebRequest.json<FplOverview>(url)
+  );
   return {
     ...overview,
     fixtures: await getFixtures(),
