@@ -14,7 +14,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Index() {
   const { players, myTeam } = useLoaderData<GameState>();
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
+    <div>
       <h1>FPL Bot</h1>
       <Link to="/scores">Update score settings</Link>
       <h2>My Team</h2>
@@ -25,13 +25,57 @@ export default function Index() {
           </li>
         ))}
       </ul>
-      <h2>All Players</h2>
+      <h2>Top Players</h2>
       <ul>
         {players.slice(0, 25).map((player) => (
           <li key={player.id}>
             <b>{player.scoreDetails.score.toFixed(2)}</b> - {player.name}
           </li>
         ))}
+      </ul>
+      <h2>Top Goalkeepers</h2>
+      <ul>
+        {players
+          .filter((player) => player.position.id === 1)
+          .slice(0, 25)
+          .map((player) => (
+            <li key={player.id}>
+              <b>{player.scoreDetails.score.toFixed(2)}</b> - {player.name}
+            </li>
+          ))}
+      </ul>
+      <h2>Top Defenders</h2>
+      <ul>
+        {players
+          .filter((player) => player.position.id === 2)
+          .slice(0, 25)
+          .map((player) => (
+            <li key={player.id}>
+              <b>{player.scoreDetails.score.toFixed(2)}</b> - {player.name}
+            </li>
+          ))}
+      </ul>
+      <h2>Top Midfielders</h2>
+      <ul>
+        {players
+          .filter((player) => player.position.id === 3)
+          .slice(0, 25)
+          .map((player) => (
+            <li key={player.id}>
+              <b>{player.scoreDetails.score.toFixed(2)}</b> - {player.name}
+            </li>
+          ))}
+      </ul>
+      <h2>Top Forwards</h2>
+      <ul>
+        {players
+          .filter((player) => player.position.id === 4)
+          .slice(0, 25)
+          .map((player) => (
+            <li key={player.id}>
+              <b>{player.scoreDetails.score.toFixed(2)}</b> - {player.name}
+            </li>
+          ))}
       </ul>
     </div>
   );
