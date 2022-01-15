@@ -1,6 +1,6 @@
 import { Readable } from "stream";
 import { GetObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
-import { s3Client } from "~/utilities/awsClients";
+import { s3Client } from "~/utilities/cloudClients";
 
 type ScoreInputs = {
   form: number;

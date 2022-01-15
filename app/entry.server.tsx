@@ -1,6 +1,7 @@
 import { renderToString } from "react-dom/server";
 import { RemixServer } from "remix";
 import type { EntryContext } from "remix";
+import { closeCacheClientConnection } from "./utilities/cloudClients";
 
 if (process.env.NODE_ENV === "development") {
   require("dotenv").config();
@@ -21,5 +22,11 @@ export default function handleRequest(
   return new Response("<!DOCTYPE html>" + markup, {
     status: responseStatusCode,
     headers: responseHeaders,
+  });
+}
+
+if (process.env.NODE_ENV !== "development") {
+  process.on("exit", () => {
+    closeCacheClientConnection();
   });
 }

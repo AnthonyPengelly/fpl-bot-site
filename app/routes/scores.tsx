@@ -6,6 +6,7 @@ import {
   redirect,
   useLoaderData,
 } from "remix";
+import { invalidateCachedGameState } from "~/gameState/gameState";
 import {
   getWeightsForUsername,
   saveWeightsForUsername,
@@ -77,6 +78,7 @@ export const action: ActionFunction = async ({ request }) => {
     homeAdvantage,
     positionPenalty,
   });
+  await invalidateCachedGameState(session.get("username"));
 
   return redirect("/");
 };

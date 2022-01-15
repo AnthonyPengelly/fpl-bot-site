@@ -24,17 +24,13 @@ const baseUrl = "https://fantasy.premierleague.com/api";
 
 const getMyDetails = async (fplCookie: string, username: string) => {
   const url = baseUrl + "/me/";
-  return await tryGetFromCache(`${url}:${username}`, async () => {
-    const response = await fetch(url, { headers: { Cookie: fplCookie } });
-    return (await response.json()) as { player: { entry: number } };
-  });
+  const response = await fetch(url, { headers: { Cookie: fplCookie } });
+  return (await response.json()) as { player: { entry: number } };
 };
 
 export const getMyTeam = async (fplCookie: string, username: string) => {
   const teamId = (await getMyDetails(fplCookie, username)).player.entry;
   const url = baseUrl + "/my-team/" + teamId + "/";
-  return await tryGetFromCache(url, async () => {
-    const response = await fetch(url, { headers: { Cookie: fplCookie } });
-    return (await response.json()) as MyTeam;
-  });
+  const response = await fetch(url, { headers: { Cookie: fplCookie } });
+  return (await response.json()) as MyTeam;
 };

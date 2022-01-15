@@ -4,7 +4,7 @@ import {
   GetItemCommand,
   PutItemCommand,
 } from "@aws-sdk/client-dynamodb";
-import { dbClient } from "./awsClients";
+import { dbClient } from "./cloudClients";
 
 export const cookieName = "__session";
 
