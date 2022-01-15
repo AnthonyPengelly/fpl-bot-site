@@ -24,8 +24,10 @@ let redisClient: RedisClientType<any, RedisScripts> | null = null;
 
 export const cacheClient = async () => {
   if (redisClient) {
+    console.log("Reusing cache client");
     return redisClient;
   }
+  console.log("Creating cache client");
   redisClient = createClient({
     url: `redis://${process.env.REDIS_USERNAME}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_URL}`,
   });

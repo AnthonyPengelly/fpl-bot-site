@@ -7,6 +7,7 @@ export const tryGetFromCache = async <T>(
   action: () => Promise<T>
 ): Promise<T> => {
   console.time(`cacheLookup-${key}`);
+  console.log(`Looking up ${key}`);
   const data = await getItem<T>(key);
   if (data) {
     console.log(`Cache HIT for ${key}`);
