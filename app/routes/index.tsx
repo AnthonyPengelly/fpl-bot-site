@@ -1,6 +1,6 @@
 import { Link, LoaderFunction, redirect, useLoaderData } from "remix";
 import { GameState, getGameState } from "~/gameState/gameState";
-import { getSession } from "~/session";
+import { getSession } from "~/utilities/session";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const session = await getSession(request.headers.get("Cookie"));

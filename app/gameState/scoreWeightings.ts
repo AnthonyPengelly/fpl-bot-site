@@ -1,5 +1,5 @@
 import { GetItemCommand, PutItemCommand } from "@aws-sdk/client-dynamodb";
-import { dbClient } from "../awsClients";
+import { dbClient } from "../utilities/awsClients";
 
 export type ScoreWeight = {
   weight: number;

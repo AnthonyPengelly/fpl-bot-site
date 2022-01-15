@@ -12,7 +12,7 @@ import {
   ScoreWeight,
   ScoreWeights,
 } from "~/gameState/scoreWeightings";
-import { getSession } from "~/session";
+import { getSession } from "~/utilities/session";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const session = await getSession(request.headers.get("Cookie"));

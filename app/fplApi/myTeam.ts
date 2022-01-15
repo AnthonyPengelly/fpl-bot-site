@@ -1,4 +1,4 @@
-import { tryGetFromCache } from "../cache";
+import { tryGetFromCache } from "~/utilities/cache";
 
 export type MyTeam = {
   picks: {

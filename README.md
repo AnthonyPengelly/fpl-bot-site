@@ -38,6 +38,8 @@ If you're used to using the `vercel dev` command provided by [Vercel CLI](https:
 - Handle errors from FPL API
 - Handle 401s or expire cookies proactively
 - Caching FPL data
+- Cache game state - "reload from FPL"
+- Get cache working locally
 - Form errors
 - Login redirect urls
 - Improve styling

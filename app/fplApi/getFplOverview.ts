@@ -1,5 +1,5 @@
 import * as WebRequest from "web-request";
-import { tryGetFromCache } from "../cache";
+import { tryGetFromCache } from "~/utilities/cache";
 
 export type FplPlayer = {
   id: number;
