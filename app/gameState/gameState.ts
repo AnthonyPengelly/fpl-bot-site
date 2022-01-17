@@ -1,19 +1,14 @@
 import { invalidateCache, tryGetFromCache } from "~/utilities/cache";
 import { getFplOverview } from "~/fplApi/getFplOverview";
-import { getMyTeam, MyTeam } from "~/fplApi/myTeam";
+import { getMyTeam } from "~/fplApi/myTeam";
 import { getWeightsForUsername } from "~/gameState/scoreWeightings";
 import { getLatestBotData } from "./botData";
 import { Player, scorePlayer } from "./players";
+import { MyTeam, recommendLineup } from "./lineup";
 
 export type GameState = {
   players: Player[];
-  myTeam: {
-    budget: number;
-    transfersRemaining: number;
-    players: (Player & { sellingPrice: number })[];
-    fplData: MyTeam;
-    teamScore: number;
-  };
+  myTeam: MyTeam;
 };
 
 const cacheKey = (username: string) => `gamestate-${username}`;
@@ -50,21 +45,8 @@ const buildGameState = async (fplCookie: string, username: string) => {
     )
     .filter((player) => player)
     .sort((a, b) => b.scoreDetails.score - a.scoreDetails.score);
-  const myTeamPlayers = myTeam.picks.map((pick) => ({
-    sellingPrice: pick.selling_price,
-    ...players.find((player) => player.id === pick.element)!,
-  }));
   return {
     players,
-    myTeam: {
-      budget: myTeam.transfers.bank,
-      transfersRemaining: myTeam.transfers.limit - myTeam.transfers.made,
-      players: myTeamPlayers,
-      fplData: myTeam,
-      teamScore: myTeamPlayers.reduce(
-        (total, player) => total + player.scoreDetails.score,
-        0
-      ),
-    },
+    myTeam: recommendLineup(myTeam, players),
   };
 };

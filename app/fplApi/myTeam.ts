@@ -1,6 +1,4 @@
-import { tryGetFromCache } from "~/utilities/cache";
-
-export type MyTeam = {
+export type FplMyTeam = {
   picks: {
     element: number;
     position: number;
@@ -32,5 +30,5 @@ export const getMyTeam = async (fplCookie: string, username: string) => {
   const teamId = (await getMyDetails(fplCookie, username)).player.entry;
   const url = baseUrl + "/my-team/" + teamId + "/";
   const response = await fetch(url, { headers: { Cookie: fplCookie } });
-  return (await response.json()) as MyTeam;
+  return (await response.json()) as FplMyTeam;
 };

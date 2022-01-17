@@ -15,11 +15,22 @@ export default function Index() {
   const { players, myTeam } = useLoaderData<GameState>();
   return (
     <div>
-      <h1>FPL Bot</h1>
       <Link to="/scores">Update score settings</Link>
-      <h2>My Team</h2>
+      <h1>You're Team</h1>
+      <h2>Recommended Linup</h2>
+      <h3>Starting XI</h3>
       <ul>
-        {myTeam.players.map((player) => (
+        {myTeam.starting11.map((player) => (
+          <li key={player.id}>
+            <b>{player.scoreDetails.score.toFixed(2)}</b> - {player.name}
+          </li>
+        ))}
+      </ul>
+      <p>Captain: {myTeam.captain.name}</p>
+      <p>Vice Captain: {myTeam.viceCaptain.name}</p>
+      <h3>Subs</h3>
+      <ul>
+        {myTeam.subs.map((player) => (
           <li key={player.id}>
             <b>{player.scoreDetails.score.toFixed(2)}</b> - {player.name}
           </li>
