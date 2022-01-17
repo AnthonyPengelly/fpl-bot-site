@@ -272,6 +272,7 @@ const getTotalWeight = (player: FplPlayer, weights: ScoreWeights) => {
     ...weights,
     homeAdvantage: undefined,
     positionPenalty: undefined,
+    isDefaultSettings: undefined,
   }).reduce(
     (total, weight) =>
       total + (weight ? getWeightForPosition(player, weight) : 0),

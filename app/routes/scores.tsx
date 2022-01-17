@@ -115,7 +115,10 @@ const Scores = () => {
     <main>
       <Link to="/">Home</Link>
       <h1>Scores</h1>
-      <Form method="post">
+      <Form
+        method="post"
+        key={initialData.isDefaultSettings ? "default" : "from-user"}
+      >
         <h2>Score Weights</h2>
         <WeightInputs weightName="form" initialWeight={initialData.form} />
         <WeightInputs
@@ -161,6 +164,9 @@ const Scores = () => {
         />
         <PositionPenalty initialValues={initialData.positionPenalty} />
         <button type="submit">Save</button>
+      </Form>
+      <Form method="post" action="/scores/reset">
+        <button type="submit">Reset Scores</button>
       </Form>
     </main>
   );

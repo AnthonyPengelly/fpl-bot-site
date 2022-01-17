@@ -1,4 +1,8 @@
-import { GetItemCommand, PutItemCommand } from "@aws-sdk/client-dynamodb";
+import {
+  DeleteItemCommand,
+  GetItemCommand,
+  PutItemCommand,
+} from "@aws-sdk/client-dynamodb";
 import { dbClient } from "../utilities/cloudClients";
 
 export type ScoreWeight = {
@@ -27,6 +31,7 @@ export type ScoreWeights = {
     forward: number;
   }; // Fixed percentage to be taken afterwards
   homeAdvantage: ScoreWeight; // Fixed number to be applied against the upcoming fixtures, not strictly a "weight"
+  isDefaultSettings?: boolean;
 };
 
 const defaultScoreWeights: ScoreWeights = {
@@ -47,6 +52,7 @@ const defaultScoreWeights: ScoreWeights = {
     forward: 0,
   },
   homeAdvantage: { weight: 1 },
+  isDefaultSettings: true,
 };
 
 export const getWeightsForUsername = async (username: string) => {
@@ -67,6 +73,17 @@ export const saveWeightsForUsername = async (
     Item: {
       id: { S: username },
       sessionData: { S: JSON.stringify(weights) },
+    },
+  });
+  await client.send(command);
+};
+
+export const resetWeightsForUsername = async (username: string) => {
+  const client = dbClient();
+  const command = new DeleteItemCommand({
+    TableName: process.env.SCORES_TABLE,
+    Key: {
+      id: { S: username },
     },
   });
   await client.send(command);
