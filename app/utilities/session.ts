@@ -76,4 +76,5 @@ export const { getSession, commitSession, destroySession } =
   createDatabaseSessionStorage({
     name: cookieName,
     sameSite: "lax",
+    secrets: [process.env.COOKIE_SECRET!],
   });
