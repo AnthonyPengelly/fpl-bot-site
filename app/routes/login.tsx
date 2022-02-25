@@ -1,5 +1,4 @@
 import { ActionFunction, Form, json, LoaderFunction, redirect } from "remix";
-import { loginToFpl } from "~/fplApi/login";
 import { commitSession, getSession } from "~/utilities/session";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -14,15 +13,14 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const action: ActionFunction = async ({ request }) => {
   const session = await getSession(request.headers.get("Cookie"));
   const data = await request.formData();
+  const cookie = data.get("cookie");
   const username = data.get("username");
-  const password = data.get("password");
-  if (!username || !password) {
+  if (!cookie || !username) {
     console.log("bad input");
     return null;
   }
-  const fplCookie = await loginToFpl(username.toString(), password.toString());
 
-  session.set("fplCookie", fplCookie);
+  session.set("fplCookie", cookie);
   session.set("username", username);
   return redirect("/", {
     headers: { "Set-Cookie": await commitSession(session) },
@@ -32,6 +30,10 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Login() {
   return (
     <Form method="post">
+      <label htmlFor="cookie">
+        <b>Cookie</b>
+      </label>
+      <input type="text" placeholder="Enter Cookie" name="cookie" required />
       <label htmlFor="username">
         <b>Username</b>
       </label>
@@ -39,16 +41,6 @@ export default function Login() {
         type="text"
         placeholder="Enter Username"
         name="username"
-        required
-      />
-
-      <label htmlFor="password">
-        <b>Password</b>
-      </label>
-      <input
-        type="password"
-        placeholder="Enter Password"
-        name="password"
         required
       />
       <button type="submit">Login</button>
